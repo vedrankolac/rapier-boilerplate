@@ -1,4 +1,4 @@
-import { Color, Group, PlaneGeometry, Mesh } from "three";
+import { Color, Group, PlaneGeometry, Mesh, Vector3 } from "three";
 import { Math as TMath } from "three";
 import { createColor } from "./utils/createColor.js";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -12,7 +12,10 @@ import { createHandsPhysicsController } from "./system/handsPhysicsController.js
 import { sphere } from './components/meshes/sphere.js';
 import { cube } from "./components/meshes/cube";
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { AmmoPhysics, PhysicsLoader } from '@enable3d/ammo-physics';
+
+import RAPIER from '@dimforge/rapier3d-compat';
+import { RigidBody, World as RWorld } from '@dimforge/rapier3d-compat';
+
 import { PMREMGenerator } from 'three';
 import { roomComposition } from './components/compositions/roomComposition.js';
 import { createWalls } from './components/meshes/walls.js'
@@ -20,6 +23,7 @@ import { createWalls } from './components/meshes/walls.js'
 import { defaultColorMattPlastic } from "./components/materials/defaultColorMattPlastic.js";
 import { defaultColorShinyPlastic } from "./components/materials/defaultColorShinyPlastic.js";
 import { defaultColorWithNoise } from "./components/materials/defaultColorWithNoise.js";
+
 
 // import { bentPlane } from "./components/materials/bentPlane.js";
 // import { frostedPlastic } from "./components/materials/frostedPlastic.js";
@@ -44,24 +48,29 @@ class World {
     this.vrControls = new VrControls(this.renderer, dolly, this.camera);
     this.loop.updatables.push(this.vrControls);
     this.floorSize = 12;
-    PhysicsLoader('static/ammo', () => this.ammoStart());
+    RAPIER.init().then(() => this.physicsStart());
   }
 
-  ammoStart() {
-    console.log('ammoStart.a0');
-    this.physics = new AmmoPhysics(this.scene);
+  physicsStart() {
+    console.log('physicsStart.3', RAPIER);
+
+    const gravity = new Vector3(0.0, -9.81, 0.0);
+    this.physics = new RWorld(gravity);
+    console.log('this.physics', this.physics);
+
+    // this.physics = new AmmoPhysics(this.scene);
     // physics.debug.enable(true);
-    this.loop.setPhysics(this.physics);
-    const room = roomComposition(this.physics, this.floorSize, false);
+    // this.loop.setPhysics(this.physics);
+    // const room = roomComposition(this.physics, this.floorSize, false);
     new RGBELoader().load(hdrURL, (hdrmap) => this.buildScene(hdrmap));
   }
 
   buildScene(hdrmap) {
-    console.log('buildScene.b0');
+    console.log('buildScene.3');
     const envmaploader = new PMREMGenerator(this.renderer);
     const envmap = envmaploader.fromCubemap(hdrmap);
     this.walls = createWalls(this.scene, this.floorSize, envmap);
-    this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
+    // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
     const spreadWidth = 10;
 
     // plane
@@ -89,8 +98,8 @@ class World {
       sphereItem.position.y = Math.random() + 2;
       sphereItem.position.z = Math.random() * spreadWidth - spreadWidth/2;
       this.scene.add(sphereItem); 
-      this.physics.add.existing(sphereItem);
-      sphereItem.body.setBounciness(1);
+      // this.physics.add.existing(sphereItem);
+      // sphereItem.body.setBounciness(1);
     }
 
     // white cubes
@@ -110,50 +119,50 @@ class World {
       cubeItem.rotation.y = Math.random();
       cubeItem.rotation.z = Math.random();
       this.scene.add(cubeItem);
-      this.physics.add.existing(cubeItem);
-      cubeItem.body.setBounciness(0.96);
+      // this.physics.add.existing(cubeItem);
+      // cubeItem.body.setBounciness(0.96);
     }
 
     // black cubes
 
-    const blackMaterial = defaultColorWithNoise(
-      createColor(0, 0, 0.06),
-      envmap
-    );
+    // const blackMaterial = defaultColorWithNoise(
+    //   createColor(0, 0, 0.06),
+    //   envmap
+    // );
 
-    for (let i = 0; i < 4; i++) {
-      const cubeItem = cube(blackMaterial, Math.random() * 1 + 0.2, Math.random() * 1.6 + 0.2, Math.random() * 1 + 0.2);
-      cubeItem.castShadow = true;
-      cubeItem.position.x = Math.random() * spreadWidth - spreadWidth/2;
-      cubeItem.position.y = Math.random() + 2;
-      cubeItem.position.z = Math.random() * spreadWidth - spreadWidth/2;
-      cubeItem.rotation.x = Math.random();
-      cubeItem.rotation.y = Math.random();
-      cubeItem.rotation.z = Math.random();
-      this.scene.add(cubeItem);
-      this.physics.add.existing(cubeItem);
-      cubeItem.body.setBounciness(0.96);
-    }
+    // for (let i = 0; i < 4; i++) {
+    //   const cubeItem = cube(blackMaterial, Math.random() * 1 + 0.2, Math.random() * 1.6 + 0.2, Math.random() * 1 + 0.2);
+    //   cubeItem.castShadow = true;
+    //   cubeItem.position.x = Math.random() * spreadWidth - spreadWidth/2;
+    //   cubeItem.position.y = Math.random() + 2;
+    //   cubeItem.position.z = Math.random() * spreadWidth - spreadWidth/2;
+    //   cubeItem.rotation.x = Math.random();
+    //   cubeItem.rotation.y = Math.random();
+    //   cubeItem.rotation.z = Math.random();
+    //   this.scene.add(cubeItem);
+    //   this.physics.add.existing(cubeItem);
+    //   cubeItem.body.setBounciness(0.96);
+    // }
 
     // blue cubes
 
-    const blueMaterial = defaultColorWithNoise(
-      createColor(0.6, 1, 0.5),
-      envmap
-    );
+    // const blueMaterial = defaultColorWithNoise(
+    //   createColor(0.6, 1, 0.5),
+    //   envmap
+    // );
 
-    for (let i = 0; i < 2; i++) {
-      const cubeItem = cube(blueMaterial, Math.random() * 1 + 0.2, Math.random() * 1.4 + 0.2, Math.random() * 1 + 0.2);
-      cubeItem.castShadow = true;
-      cubeItem.position.x = Math.random() * spreadWidth - spreadWidth/2;
-      cubeItem.position.y = Math.random() + 2;
-      cubeItem.position.z = Math.random() * spreadWidth - spreadWidth/2;
-      cubeItem.rotation.x = Math.random();
-      cubeItem.rotation.y = Math.random();
-      cubeItem.rotation.z = Math.random();
-      this.scene.add(cubeItem);
-      this.physics.add.existing(cubeItem);
-    }
+    // for (let i = 0; i < 2; i++) {
+    //   const cubeItem = cube(blueMaterial, Math.random() * 1 + 0.2, Math.random() * 1.4 + 0.2, Math.random() * 1 + 0.2);
+    //   cubeItem.castShadow = true;
+    //   cubeItem.position.x = Math.random() * spreadWidth - spreadWidth/2;
+    //   cubeItem.position.y = Math.random() + 2;
+    //   cubeItem.position.z = Math.random() * spreadWidth - spreadWidth/2;
+    //   cubeItem.rotation.x = Math.random();
+    //   cubeItem.rotation.y = Math.random();
+    //   cubeItem.rotation.z = Math.random();
+    //   this.scene.add(cubeItem);
+    //   this.physics.add.existing(cubeItem);
+    // }
 
     // frosted cubes
 
