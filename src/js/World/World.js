@@ -22,8 +22,6 @@ import { defaultColorShinyPlastic } from "./components/materials/defaultColorShi
 import { defaultColorWithNoise } from "./components/materials/defaultColorWithNoise.js";
 import { scaleTest } from "./components/materials/scaleTest.js";
 
-const hdrURL = new URL('/assets/copyrighted/hdr/studio_small_08_1k.hdr', import.meta.url);
-
 class World {
   constructor() {
     this.renderer = createRenderer();
@@ -42,41 +40,38 @@ class World {
 
   physicsStart() {
     console.log('physicsStart.3');
-
     const gravity = new Vector3(0.0, -9.81, 0.0);
     this.physicsWorld = new RWorld(gravity);
     // console.log('RAPIER', RAPIER);
     // console.log('this.physicsWorld', this.physicsWorld);
     this.loop.setPhysics(this.physicsWorld);
-    const room = roomComposition(this.physicsWorld, this.floorSize, false);
-    new RGBELoader().load(hdrURL, (hdrmap) => this.buildScene(hdrmap));
+    this.room = roomComposition(this.physicsWorld, this.floorSize, false);
+    this.buildScene();
   }
 
-  buildScene(hdrmap) {
+  buildScene() {
     console.log('buildScene.3');
-    const envmaploader = new PMREMGenerator(this.renderer);
-    const envmap = envmaploader.fromCubemap(hdrmap);
-    this.walls = createWalls(this.scene, this.floorSize, envmap);
+    const envmap = { texture: null };
+    this.walls = createWalls(this.scene, this.floorSize);
     // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
     const spreadWidth = 10;
 
     // plane
 
-    // const planeMaterial = scaleTest(0x000000, envmap, 0.84);
-    // const planeGeom = new PlaneGeometry(2, 2, 4, 4);
-    // const plane = new Mesh( planeGeom, planeMaterial );
-    // plane.rotation.y = TMath.degToRad(45);
-    // plane.rotation.x = TMath.degToRad(-30);
-    // plane.position.x = -2;
-    // plane.position.y = 2;
-    // plane.position.z = -2;
-    // this.scene.add(plane);
+    const planeMaterial = scaleTest(0x000000);
+    const planeGeom = new PlaneGeometry(2, 2, 4, 4);
+    const plane = new Mesh( planeGeom, planeMaterial );
+    plane.rotation.y = TMath.degToRad(45);
+    plane.rotation.x = TMath.degToRad(-30);
+    plane.position.x = -2;
+    plane.position.y = 2;
+    plane.position.z = -2;
+    this.scene.add(plane);
 
     // spheres
 
     const colorMaterial = defaultColorShinyPlastic(
-      createColor(0.02, 1, 0.5),
-      envmap
+      createColor(0.02, 1, 0.5)
     );
 
     for (let i = 0; i < 40; i++) {
@@ -102,8 +97,7 @@ class World {
     // white cubes
 
     const whiteMaterial = defaultColorWithNoise(
-      createColor(0.6, 0.8, 0.5),
-      envmap
+      createColor(0.6, 0.8, 0.5)
     );
 
     for (let i = 0; i < 8; i++) {
@@ -131,8 +125,7 @@ class World {
     // black cubes
 
     const blackMaterial = defaultColorMattPlastic(
-      createColor(0.6, 0, 0.02),
-      envmap
+      createColor(0.6, 0, 0.02)
     );
 
     for (let i = 0; i < 8; i++) {

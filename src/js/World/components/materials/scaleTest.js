@@ -14,7 +14,7 @@ const roughnessMapUrl        = new URL('/assets/public/textures/bent-plane/unifo
 // const clearcoatMapUrl     = new URL('/assets/public/textures/bent-plane/uniform-noise_color_3.png', import.meta.url);
 // const transmissionMapUrl  = new URL('/assets/public/textures/bent-plane/uniform-noise_color_3.png', import.meta.url);
 
-const scaleTest = (color, envmap, envMapIntensity) => {
+const scaleTest = (color, envmap = { texture: null }, envMapIntensity = 1) => {
   const repeatX = 1;
   const repeatY = 1;
 

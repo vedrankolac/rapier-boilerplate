@@ -1,9 +1,9 @@
-import { PerspectiveCamera, Group } from 'three';
+import { PerspectiveCamera, Group, Vector3 } from 'three';
 
 const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 200 );
-  camera.position.x = 7.5;
-  camera.position.z = 10;
+  camera.position.x = 6;
+  camera.position.z = 6;
   camera.position.y = 6;
   return camera;
 }

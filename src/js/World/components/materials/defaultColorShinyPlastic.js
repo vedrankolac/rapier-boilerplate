@@ -2,7 +2,7 @@ import {
   MeshStandardMaterial
 } from 'three';
 
-const defaultColorShinyPlastic = (color, envmap) => {
+const defaultColorShinyPlastic = (color, envmap = { texture: null }) => {
   const parameters = {
     envMap: envmap.texture,
     envMapIntensity: 1,

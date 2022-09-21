@@ -4,7 +4,7 @@ import { textureHandler } from '../../system/textureHandler';
 const colorTexture   = new URL('/assets/public/textures/noise/uniform-noise_color_3.png', import.meta.url);
 const normalTexture  = new URL('/assets/public/textures/noise/uniform-noise_normal_4.png', import.meta.url);
 
-const defaultColorWithNoise = (color, envmap) => {
+const defaultColorWithNoise = (color, envmap = { texture: null }) => {
   const repeat = 1;
   const colorMap = textureHandler(colorTexture, repeat);
   const normalMap = textureHandler(normalTexture, repeat);
