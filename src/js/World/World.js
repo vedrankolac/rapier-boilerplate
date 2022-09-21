@@ -1,5 +1,4 @@
-import { Color, Group, PlaneGeometry, Mesh, Vector3 } from "three";
-import { Math as TMath } from "three";
+import { Vector3 } from "three";
 import { createColor } from "./utils/createColor.js";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Loop } from './system/Loop.js';
@@ -11,16 +10,13 @@ import { VrControls } from './system/VrControls.js';
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js";
 import { sphere } from './components/meshes/sphere.js';
 import { cube } from "./components/meshes/cube";
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { World as RWorld } from '@dimforge/rapier3d-compat';
-import { PMREMGenerator } from 'three';
 import { roomComposition } from './components/compositions/roomComposition.js';
 import { createWalls } from './components/meshes/walls.js'
 import { defaultColorMattPlastic } from "./components/materials/defaultColorMattPlastic.js";
 import { defaultColorShinyPlastic } from "./components/materials/defaultColorShinyPlastic.js";
 import { defaultColorWithNoise } from "./components/materials/defaultColorWithNoise.js";
-import { scaleTest } from "./components/materials/scaleTest.js";
 
 class World {
   constructor() {
@@ -55,18 +51,6 @@ class World {
     this.walls = createWalls(this.scene, this.floorSize);
     // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
     const spreadWidth = 10;
-
-    // plane
-
-    const planeMaterial = scaleTest(0x000000);
-    const planeGeom = new PlaneGeometry(2, 2, 4, 4);
-    const plane = new Mesh( planeGeom, planeMaterial );
-    plane.rotation.y = TMath.degToRad(45);
-    plane.rotation.x = TMath.degToRad(-30);
-    plane.position.x = -2;
-    plane.position.y = 2;
-    plane.position.z = -2;
-    this.scene.add(plane);
 
     // spheres
 
