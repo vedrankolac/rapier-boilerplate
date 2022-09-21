@@ -1,13 +1,15 @@
 import { Clock } from 'three';
+import { Quaternion } from "three";
 
 class Loop {
   constructor(camera, scene, renderer) {
     this.camera = camera;
     this.scene = scene;
     this.renderer = renderer;
-    this.updatables = [];
+    this.bodies = []
+    this.updatableBodies = [];
     this.clock = new Clock();
-    this.physics = undefined;
+    this.physicsWorld = undefined;
   }
 
   start() {
@@ -24,8 +26,8 @@ class Loop {
     this.renderer.setAnimationLoop(null);
   }
 
-  setPhysics(physics) {
-    this.physics = physics;
+  setPhysics(physicsWorld) {
+    this.physicsWorld = physicsWorld;
   }
 
   tick() {
@@ -36,13 +38,29 @@ class Loop {
     //   `The last frame rendered in ${delta * 1000} milliseconds`,
     // );
 
-    for (const object of this.updatables) {
+    for (const object of this.updatableBodies) {
       object.tick(delta);
     }
     
-    if (this.physics) {
-      this.physics.update(delta * 1000);
-      // this.physics.updateDebugger();
+    if (this.physicsWorld && this.bodies.length > 0) {
+      this.physicsWorld.step();
+
+      this.bodies.forEach(body => {
+        const position = body.rigidBody.translation();
+        const rotation = body.rigidBody.rotation();
+
+        body.mesh.position.x = position.x;
+        body.mesh.position.y = position.y;
+        body.mesh.position.z = position.z;
+
+        body.mesh.setRotationFromQuaternion(
+          new Quaternion(
+            rotation.x,
+            rotation.y,
+            rotation.z,
+            rotation.w
+          ));
+      });
     }
   }
 }

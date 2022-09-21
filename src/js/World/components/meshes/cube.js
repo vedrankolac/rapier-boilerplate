@@ -1,16 +1,32 @@
-import { BoxGeometry, Mesh } from 'three';
+import { BoxGeometry, Mesh, Quaternion, Euler } from 'three';
+import {
+  RigidBodyDesc,
+  ColliderDesc
+} from '@dimforge/rapier3d-compat';
 
-const cube = (material, width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1) => {
-  const geometry = new BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments);
+const cube = (material, size, translation, rotation, physicsWorld, widthSegments = 1, heightSegments = 1, depthSegments = 1) => {
+  const geometry = new BoxGeometry(size.widht, size.height, size.depth, widthSegments, heightSegments, depthSegments);
   const mesh = new Mesh( geometry, material );
-  // const speed = Math.random() + 0.4;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
 
-  mesh.tick = (delta) => {
-    // mesh.rotation.x += delta * speed;
-    // mesh.rotation.y += delta * speed;
+  const rigidBodyDesc = RigidBodyDesc.dynamic();
+  rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
+  const q = new Quaternion().setFromEuler(
+    new Euler( rotation.x, rotation.y, rotation.z, 'XYZ' )
+  )
+  rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
+
+  const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
+  const collider = ColliderDesc.cuboid(size.widht / 2, size.height / 2, size.depth / 2);
+
+  physicsWorld.createCollider(collider, rigidBody);
+
+  return {
+    mesh: mesh,
+    collider: collider,
+    rigidBody: rigidBody
   };
-
-  return mesh;
 }
 
 export { cube };
