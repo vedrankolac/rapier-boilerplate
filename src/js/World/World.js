@@ -47,7 +47,6 @@ class World {
 
   buildScene() {
     console.log('buildScene.3');
-    const envmap = { texture: null };
     this.walls = createWalls(this.scene, this.floorSize);
     // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
     const spreadWidth = 10;
