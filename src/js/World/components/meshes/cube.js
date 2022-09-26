@@ -5,7 +5,7 @@ import {
 } from '@dimforge/rapier3d-compat';
 
 const cube = (material, size, translation, rotation, physicsWorld, widthSegments = 1, heightSegments = 1, depthSegments = 1) => {
-  const geometry = new BoxGeometry(size.widht, size.height, size.depth, widthSegments, heightSegments, depthSegments);
+  const geometry = new BoxGeometry(size.width, size.height, size.depth, widthSegments, heightSegments, depthSegments);
   const mesh = new Mesh( geometry, material );
   mesh.castShadow = true;
   mesh.receiveShadow = true;
@@ -18,7 +18,7 @@ const cube = (material, size, translation, rotation, physicsWorld, widthSegments
   rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
 
   const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
-  const collider = ColliderDesc.cuboid(size.widht / 2, size.height / 2, size.depth / 2);
+  const collider = ColliderDesc.cuboid(size.width / 2, size.height / 2, size.depth / 2);
 
   physicsWorld.createCollider(collider, rigidBody);
 

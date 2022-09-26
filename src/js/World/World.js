@@ -10,6 +10,7 @@ import { VrControls } from './system/VrControls.js';
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js";
 import { sphere } from './components/meshes/sphere.js';
 import { cube } from "./components/meshes/cube";
+import { compoundCubes } from "./components/meshes/compoundCubes.js";
 import RAPIER from '@dimforge/rapier3d-compat';
 import { World as RWorld } from '@dimforge/rapier3d-compat';
 import { roomComposition } from './components/compositions/roomComposition.js';
@@ -54,7 +55,7 @@ class World {
     // spheres
 
     const colorMaterial = defaultColorShinyPlastic(
-      createColor(0.02, 1, 0.5)
+      createColor(0.6, 0.9, 0.1)
     );
 
     for (let i = 0; i < 40; i++) {
@@ -77,15 +78,15 @@ class World {
       this.loop.bodies.push(sphereItem);
     }
 
-    // white cubes
+    // blue cubes
 
-    const whiteMaterial = defaultColorWithNoise(
-      createColor(0.6, 0.8, 0.5)
+    const blueMaterial = defaultColorWithNoise(
+      createColor(0.6, 0.8, 0.3)
     );
 
     for (let i = 0; i < 8; i++) {
       const size = {
-        widht:  Math.random() * 1 + 0.2,
+        width:  Math.random() * 1 + 0.2,
         height: Math.random() * 1.6 + 0.2,
         depth:  Math.random() * 1 + 0.2
       }
@@ -100,9 +101,37 @@ class World {
         z: Math.random()
       }
 
-      const cubeItem = cube(whiteMaterial, size, translation, rotation, this.physicsWorld);
+      const cubeItem = cube(blueMaterial, size, translation, rotation, this.physicsWorld);
       this.scene.add(cubeItem.mesh);
       this.loop.bodies.push(cubeItem);
+    }
+
+
+    // compound cubes
+
+    const wMaterial = defaultColorWithNoise(
+      createColor(0.2, 0, 1)
+    );
+
+    const bMaterial = defaultColorWithNoise(
+      createColor(0.2, 0, 0)
+    );
+
+    for (let i = 0; i < 8; i++) {
+      const translation = {
+        x: Math.random() * spreadWidth - spreadWidth/2,
+        y: Math.random() * 6 + 3,
+        z: Math.random() * spreadWidth - spreadWidth/2
+      }
+      const rotation = {
+        x: Math.random(),
+        y: Math.random(),
+        z: Math.random()
+      }
+
+      const cItem = compoundCubes([wMaterial, bMaterial], translation, rotation, this.physicsWorld);
+      this.scene.add(cItem.mesh);
+      this.loop.bodies.push(cItem);
     }
 
     // black cubes
@@ -113,7 +142,7 @@ class World {
 
     for (let i = 0; i < 8; i++) {
       const size = {
-        widht:  Math.random() * 1 + 0.2,
+        width:  Math.random() * 1 + 0.2,
         height: Math.random() * 1.6 + 0.2,
         depth:  Math.random() * 1 + 0.2
       }
