@@ -1,5 +1,5 @@
 import { AmbientLight, DirectionalLight, PointLight } from 'three';
-import { sphere } from '../meshes/sphere';
+import { sphere } from '../bodies/sphere';
 import { defaultColorShinyPlastic } from '../materials/defaultColorShinyPlastic.js';
 
 const createLights = scene => {

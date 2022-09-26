@@ -8,12 +8,12 @@ import { createCamera, createDolly } from './components/stage/camera.js';
 import { createLights } from './components/stage/lights.js';
 import { VrControls } from './system/VrControls.js';
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js";
-import { sphere } from './components/meshes/sphere.js';
-import { cube } from "./components/meshes/cube";
-import { compoundCubes } from "./components/meshes/compoundCubes.js";
+import { sphere } from './components/bodies/sphere.js';
+import { cube } from "./components/bodies/cube";
+import { compoundCubes } from "./components/bodies/compoundCubes.js";
 import RAPIER from '@dimforge/rapier3d-compat';
 import { World as RWorld } from '@dimforge/rapier3d-compat';
-import { roomComposition } from './components/compositions/roomComposition.js';
+import { roomComposition } from './components/bodies/roomComposition.js';
 import { createWalls } from './components/meshes/walls.js'
 import { defaultColorMattPlastic } from "./components/materials/defaultColorMattPlastic.js";
 import { defaultColorShinyPlastic } from "./components/materials/defaultColorShinyPlastic.js";

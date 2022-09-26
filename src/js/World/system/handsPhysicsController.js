@@ -1,5 +1,5 @@
 import { Group } from 'three';
-import { sphere } from '../components/meshes/sphere';
+import { sphere } from '../components/bodies/sphere';
 import { createColor } from '../utils/createColor';
 import { defaultColorMattPlastic } from '../components/materials/defaultColorMattPlastic';
 
