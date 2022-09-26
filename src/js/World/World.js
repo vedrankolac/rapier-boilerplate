@@ -13,7 +13,7 @@ import { cube } from "./components/bodies/cube";
 import { compoundCubes } from "./components/bodies/compoundCubes.js";
 import RAPIER from '@dimforge/rapier3d-compat';
 import { World as RWorld } from '@dimforge/rapier3d-compat';
-import { roomComposition } from './components/bodies/roomComposition.js';
+import { roomComposition } from './components/bodies/room.js';
 import { createWalls } from './components/meshes/walls.js'
 import { defaultColorMattPlastic } from "./components/materials/defaultColorMattPlastic.js";
 import { defaultColorShinyPlastic } from "./components/materials/defaultColorShinyPlastic.js";
@@ -58,9 +58,9 @@ class World {
       createColor(0.6, 0.9, 0.1)
     );
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 20; i++) {
       const size = {
-        radius: Math.random()/4 + 0.2
+        radius: Math.random()/4 + 0.1
       }
       const translation = {
         x: Math.random() * spreadWidth - spreadWidth/2,
@@ -76,6 +76,7 @@ class World {
       const sphereItem = sphere(colorMaterial, size, translation, rotation, this.physicsWorld);
       this.scene.add(sphereItem.mesh);
       this.loop.bodies.push(sphereItem);
+      this.loop.updatableBodies.push(sphereItem.rigidBody);
     }
 
     // blue cubes
@@ -84,7 +85,7 @@ class World {
       createColor(0.6, 0.8, 0.3)
     );
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 2; i++) {
       const size = {
         width:  Math.random() * 1 + 0.2,
         height: Math.random() * 1.6 + 0.2,
@@ -140,7 +141,7 @@ class World {
       createColor(0.6, 0, 0.02)
     );
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const size = {
         width:  Math.random() * 1 + 0.2,
         height: Math.random() * 1.6 + 0.2,

@@ -18,9 +18,22 @@ const sphere = (material, size, translation, rotation, physicsWorld) => {
   rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
 
   const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
-  const collider = ColliderDesc.ball(size.radius);
+  const collider = ColliderDesc.ball(size.radius)
+    .setRestitution(0.9);
 
   physicsWorld.createCollider(collider, rigidBody);
+
+  rigidBody.tick = (delta) => {
+    const treshold = Math.random();
+    const impulseRange = 4;
+    if (treshold < 0.02 && ((mesh.position.y - size.radius) < 0.01)) {
+      rigidBody.applyImpulse({
+        x: Math.random() * impulseRange - impulseRange/2,
+        y: Math.random() * impulseRange/2,
+        z: Math.random() * impulseRange - impulseRange/2
+      }, true);
+    }
+  };
 
   return {
     mesh: mesh,
