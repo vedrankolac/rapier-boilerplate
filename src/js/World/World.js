@@ -36,7 +36,7 @@ class World {
   }
 
   physicsStart() {
-    console.log('physicsStart.3');
+    console.log('physicsStart.1');
     const gravity = new Vector3(0.0, -9.81, 0.0);
     this.physicsWorld = new RWorld(gravity);
     // console.log('RAPIER', RAPIER);
@@ -47,7 +47,7 @@ class World {
   }
 
   buildScene() {
-    console.log('buildScene.3');
+    console.log('buildScene.1');
     this.walls = createWalls(this.scene, this.floorSize);
     // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
     const spreadWidth = 10;

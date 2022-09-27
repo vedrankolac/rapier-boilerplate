@@ -1,11 +1,11 @@
 import { Vector2, MeshPhysicalMaterial, CanvasTexture, RepeatWrapping } from 'three';
-import { WallNoise } from '../textures/WallNoise';
+import { NoiseFloor } from '../textures/NoiseFloor';
 
-const wallCanvasNoise = (color = 0x000000, envmap = { texture: null }, envMapIntensity = 1) => {
-  const repeatX = 4;
-  const repeatY = 4;
+const canvasNoiseFloor = (envMapIntensity = 1) => {
+  const repeatX = 8;
+  const repeatY = 8;
 
-  const maps = new WallNoise();
+  const maps = new NoiseFloor();
   const colorMap = new CanvasTexture(maps.colorMap);
   colorMap.repeat.x = repeatX;
   colorMap.repeat.y = repeatY;
@@ -27,14 +27,14 @@ const wallCanvasNoise = (color = 0x000000, envmap = { texture: null }, envMapInt
   const parameters = {
     // STANDARD
 
-    envMap: envmap.texture,
+    // envMap: envmap.texture,
     envMapIntensity: envMapIntensity,
 
     // color: color,
     map: colorMap,
 
-    roughness: 1,
-    roughnessMap: roughnessMap,
+    // roughness: 1,
+    // roughnessMap: roughnessMap,
 
     // normalMap: normalMap,
 		// normalScale: new Vector2(1, 1),
@@ -52,8 +52,8 @@ const wallCanvasNoise = (color = 0x000000, envmap = { texture: null }, envMapInt
     // displacementScale
     // displacementBias
 
-    metalness: 1,
-    metalnessMap: metalnessMap,
+    // metalness: 1,
+    // metalnessMap: metalnessMap,
 
     // alphaMap: alphaMap,
 
@@ -89,5 +89,5 @@ const wallCanvasNoise = (color = 0x000000, envmap = { texture: null }, envMapInt
 }
 
 export {
-  wallCanvasNoise
+  canvasNoiseFloor
 };

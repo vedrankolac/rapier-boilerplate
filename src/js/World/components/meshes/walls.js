@@ -1,11 +1,11 @@
 import {Math, PlaneGeometry, Mesh } from 'three';
-import { WDotsScratchHairCleaner } from '../materials/WDotsScratchHairCleaner';
 import { solidLight } from '../materials/solidLight';
-import { wallCanvasNoise } from '../materials/wallCanvasNoise';
+import { canvasNoiseWall } from '../materials/canvasNoiseWall';
+import { canvasNoiseFloor } from '../materials/canvasNoiseFloor';
 
 const createWalls = (scene, size = 20) => {
-  const materialWall = wallCanvasNoise();
-  const materialFloor = WDotsScratchHairCleaner(0xffffff, { texture: null }, 0.08);
+  const materialWall = canvasNoiseWall(0.9);
+  const materialFloor = canvasNoiseFloor(0.06);
   const materialCeeling = solidLight(0xffffff, 0xffffff);
   const geometry = new PlaneGeometry(size, size, 4, 4);
   geometry.attributes.uv2 = geometry.attributes.uv; // second uv is needed for aoMap
