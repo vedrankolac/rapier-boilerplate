@@ -3,10 +3,9 @@ import { sphere } from '../components/bodies/sphere';
 import { createColor } from '../utils/createColor';
 import { defaultColorMattPlastic } from '../components/materials/defaultColorMattPlastic';
 
-const createHandsPhysicsController = (scene, physics, vrControls, envMap) => {
+const createHandsPhysicsController = (scene, physics, vrControls) => {
   const handleMaterial = defaultColorMattPlastic(
-    createColor(0, 1, 1),
-    envMap
+    createColor(0, 1, 1)
   );
 
   const handDistance = 0;

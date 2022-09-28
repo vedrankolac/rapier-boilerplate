@@ -49,7 +49,7 @@ class World {
   buildScene() {
     console.log('buildScene.1');
     this.walls = createWalls(this.scene, this.floorSize);
-    // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls, envmap);
+    // this.handsPhysicsController = createHandsPhysicsController(this.scene, this.physics, this.vrControls);
     const spreadWidth = 10;
 
     // spheres
