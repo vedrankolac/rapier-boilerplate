@@ -3,6 +3,14 @@ Boilerplate for a fast start with three.js materials in rapier physics engine on
 - only tested on Oculus Quest 2
 - movement is controlled with joystick
 
+### VrControls
+After trying a lot of stuf related to Oculus controlers and VR in general (here on GitHub) I have decided to write my own class for Oculus controler, might be usefull for public :)
+
+Try it here
+```bash
+src/js/World/system/VrControls.js
+```
+
 ### Quick start
 ```
 npm i
